@@ -65,3 +65,13 @@ services:
       - /workspace/src/Imagine.Students.Api/obj
       - /workspace/src/Imagine.Students.Api/bin
     working_dir: /workspace
+
+  k6:
+    entrypoint: /bin/sh
+    command: -c 'k6 run -e BASE_URL=$${BASE_URL} tests/load/classroom-students-stress.js'
+    environment:
+      - BASE_URL=http://api:5000
+    image: loadimpact/k6:0.32.0
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
