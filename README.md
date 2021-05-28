@@ -22,6 +22,25 @@ Read the [Overview](OVERVIEW.md) for additional context.
   docker-compose pull
   ```
 
+## tl;dr
+
+- Start everything up:
+
+  ```bash
+  docker-compose up -d api grafana
+  ```
+
+- Run `k6` to generate some metrics:
+
+  ```bash
+  docker-compose run --rm k6
+  ```
+
+- Log into Grafana at http://localhost:3000 with `admin`/`foobar`.
+
+- Check out the [Students API](http://localhost:3000/d/q9epTuqMk/students-api)
+  dashboard.
+
 ## Workshop
 
 Follow the steps below to become more familiar with Prometheus. We'll be
