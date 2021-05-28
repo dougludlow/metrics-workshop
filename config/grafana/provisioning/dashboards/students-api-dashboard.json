@@ -1,0 +1,722 @@
+{
+	"annotations": {
+		"list": [
+			{
+				"builtIn": 1,
+				"datasource": "-- Grafana --",
+				"enable": true,
+				"hide": true,
+				"iconColor": "rgba(0, 211, 255, 1)",
+				"name": "Annotations & Alerts",
+				"type": "dashboard"
+			}
+		]
+	},
+	"editable": true,
+	"gnetId": null,
+	"graphTooltip": 1,
+	"links": [],
+	"panels": [
+		{
+			"aliasColors": {},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": null,
+			"fieldConfig": {
+				"defaults": {},
+				"overrides": []
+			},
+			"fill": 1,
+			"fillGradient": 1,
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 0,
+				"y": 0
+			},
+			"hiddenSeries": false,
+			"id": 2,
+			"legend": {
+				"avg": false,
+				"current": false,
+				"max": false,
+				"min": false,
+				"show": true,
+				"total": false,
+				"values": false
+			},
+			"lines": true,
+			"linewidth": 1,
+			"nullPointMode": "connected",
+			"options": {
+				"alertThreshold": true
+			},
+			"percentage": false,
+			"pluginVersion": "7.5.7",
+			"pointradius": 2,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"expr": "sum by (id) (rate(container_cpu_usage_seconds_total{container_label_com_docker_compose_service=\"api\"}[2m]))\n/\nsum by (id) (\n  container_spec_cpu_shares{container_label_com_docker_compose_service=\"api\"}\n  /\n  container_spec_cpu_period{container_label_com_docker_compose_service=\"api\"}\n)",
+					"interval": "",
+					"legendFormat": "{{id}}",
+					"refId": "A"
+				}
+			],
+			"thresholds": [],
+			"timeFrom": null,
+			"timeRegions": [],
+			"timeShift": null,
+			"title": "CPU Usage",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": []
+			},
+			"yaxes": [
+				{
+					"format": "percent",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": false
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		},
+		{
+			"aliasColors": {},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": null,
+			"fieldConfig": {
+				"defaults": {},
+				"overrides": []
+			},
+			"fill": 1,
+			"fillGradient": 1,
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 12,
+				"y": 0
+			},
+			"hiddenSeries": false,
+			"id": 4,
+			"legend": {
+				"avg": false,
+				"current": false,
+				"max": false,
+				"min": false,
+				"show": true,
+				"total": false,
+				"values": false
+			},
+			"lines": true,
+			"linewidth": 1,
+			"nullPointMode": "connected",
+			"options": {
+				"alertThreshold": true
+			},
+			"percentage": false,
+			"pluginVersion": "7.5.7",
+			"pointradius": 2,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"exemplar": true,
+					"expr": "sum by (id) (container_memory_working_set_bytes{container_label_com_docker_compose_service=\"api\"})",
+					"interval": "",
+					"legendFormat": "{{id}}",
+					"refId": "A"
+				}
+			],
+			"thresholds": [],
+			"timeFrom": null,
+			"timeRegions": [],
+			"timeShift": null,
+			"title": "Memory Usage",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": []
+			},
+			"yaxes": [
+				{
+					"format": "decbytes",
+					"label": "",
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		},
+		{
+			"aliasColors": {},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": null,
+			"fieldConfig": {
+				"defaults": {},
+				"overrides": []
+			},
+			"fill": 1,
+			"fillGradient": 1,
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 0,
+				"y": 8
+			},
+			"hiddenSeries": false,
+			"id": 6,
+			"legend": {
+				"avg": false,
+				"current": false,
+				"max": false,
+				"min": false,
+				"show": true,
+				"total": false,
+				"values": false
+			},
+			"lines": true,
+			"linewidth": 1,
+			"nullPointMode": "null",
+			"options": {
+				"alertThreshold": true
+			},
+			"percentage": false,
+			"pluginVersion": "7.5.7",
+			"pointradius": 2,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"exemplar": true,
+					"expr": "histogram_quantile(.99, sum by (le) (rate(http_request_duration_seconds_bucket{job=\"api\"}[5m])))*1000",
+					"interval": "",
+					"legendFormat": "99th percentile",
+					"refId": "A"
+				},
+				{
+					"exemplar": true,
+					"expr": "histogram_quantile(.95, sum by (le) (rate(http_request_duration_seconds_bucket{job=\"api\"}[5m])))*1000",
+					"interval": "",
+					"legendFormat": "95th percentile",
+					"refId": "B"
+				},
+				{
+					"exemplar": true,
+					"expr": "histogram_quantile(.75, sum by (le) (rate(http_request_duration_seconds_bucket{job=\"api\"}[5m])))*1000",
+					"interval": "",
+					"legendFormat": "75th percentile",
+					"refId": "C"
+				},
+				{
+					"exemplar": true,
+					"expr": "histogram_quantile(.5, sum by (le) (rate(http_request_duration_seconds_bucket{job=\"api\"}[5m])))*1000",
+					"interval": "",
+					"legendFormat": "50th percentile",
+					"refId": "D"
+				}
+			],
+			"thresholds": [],
+			"timeFrom": null,
+			"timeRegions": [],
+			"timeShift": null,
+			"title": "Request Duration",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": []
+			},
+			"yaxes": [
+				{
+					"format": "ms",
+					"label": "",
+					"logBase": 1,
+					"max": null,
+					"min": "0",
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": false
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		},
+		{
+			"aliasColors": {},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": null,
+			"fieldConfig": {
+				"defaults": {},
+				"overrides": []
+			},
+			"fill": 1,
+			"fillGradient": 1,
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 12,
+				"y": 8
+			},
+			"hiddenSeries": false,
+			"id": 12,
+			"legend": {
+				"avg": false,
+				"current": false,
+				"max": false,
+				"min": false,
+				"show": true,
+				"total": false,
+				"values": false
+			},
+			"lines": true,
+			"linewidth": 1,
+			"nullPointMode": "null as zero",
+			"options": {
+				"alertThreshold": true
+			},
+			"percentage": false,
+			"pluginVersion": "7.5.7",
+			"pointradius": 2,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"expr": "sum(rate(http_requests_received_total{job=\"api\",code=~\"[45]..\"}[1m])) / sum(rate(http_requests_received_total{job=\"api\"}[1m]))",
+					"interval": "",
+					"legendFormat": "Errors",
+					"refId": "A"
+				}
+			],
+			"thresholds": [],
+			"timeFrom": null,
+			"timeRegions": [],
+			"timeShift": null,
+			"title": "Error Rate",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": []
+			},
+			"yaxes": [
+				{
+					"format": "percentunit",
+					"label": null,
+					"logBase": 1,
+					"max": "1",
+					"min": "0",
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		},
+		{
+			"aliasColors": {},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": null,
+			"description": "",
+			"fieldConfig": {
+				"defaults": {},
+				"overrides": []
+			},
+			"fill": 1,
+			"fillGradient": 1,
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 0,
+				"y": 16
+			},
+			"hiddenSeries": false,
+			"id": 10,
+			"legend": {
+				"avg": false,
+				"current": false,
+				"max": false,
+				"min": false,
+				"show": true,
+				"total": false,
+				"values": false
+			},
+			"lines": true,
+			"linewidth": 1,
+			"nullPointMode": "null",
+			"options": {
+				"alertThreshold": true
+			},
+			"percentage": false,
+			"pluginVersion": "7.5.7",
+			"pointradius": 2,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"expr": "(\n  sum(rate(http_request_duration_seconds_bucket{job=\"api\",le=\"0.256\",code!~\"[45]..\"}[1m]))\n  +\n  sum(rate(http_request_duration_seconds_bucket{job=\"api\",le=\"1.024\",code!~\"[45]..\"}[1m]))\n) / 2 / sum(rate(http_request_duration_seconds_count[1m])) > 0 or vector(1)",
+					"instant": false,
+					"interval": "",
+					"legendFormat": "Apdex",
+					"refId": "A"
+				}
+			],
+			"thresholds": [],
+			"timeFrom": null,
+			"timeRegions": [],
+			"timeShift": null,
+			"title": "Request Duration Apdex",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": []
+			},
+			"yaxes": [
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": "1",
+					"min": "0",
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		},
+		{
+			"aliasColors": {},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": null,
+			"fieldConfig": {
+				"defaults": {},
+				"overrides": []
+			},
+			"fill": 1,
+			"fillGradient": 1,
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 12,
+				"y": 16
+			},
+			"hiddenSeries": false,
+			"id": 8,
+			"legend": {
+				"avg": false,
+				"current": false,
+				"max": false,
+				"min": false,
+				"show": true,
+				"total": false,
+				"values": false
+			},
+			"lines": true,
+			"linewidth": 1,
+			"nullPointMode": "null as zero",
+			"options": {
+				"alertThreshold": true
+			},
+			"percentage": false,
+			"pluginVersion": "7.5.7",
+			"pointradius": 2,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [],
+			"spaceLength": 10,
+			"stack": true,
+			"steppedLine": false,
+			"targets": [
+				{
+					"expr": "sum by (code) (rate(http_requests_received_total{job=\"api\",code=~\"[45]..\"}[1m]))",
+					"interval": "",
+					"legendFormat": "{{code}}",
+					"refId": "A"
+				}
+			],
+			"thresholds": [],
+			"timeFrom": null,
+			"timeRegions": [],
+			"timeShift": null,
+			"title": "Errors",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": []
+			},
+			"yaxes": [
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": "0",
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": false
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		},
+		{
+			"aliasColors": {},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": null,
+			"fieldConfig": {
+				"defaults": {},
+				"overrides": []
+			},
+			"fill": 1,
+			"fillGradient": 1,
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 0,
+				"y": 24
+			},
+			"hiddenSeries": false,
+			"id": 14,
+			"legend": {
+				"avg": false,
+				"current": false,
+				"max": false,
+				"min": false,
+				"show": true,
+				"total": false,
+				"values": false
+			},
+			"lines": true,
+			"linewidth": 1,
+			"nullPointMode": "connected",
+			"options": {
+				"alertThreshold": true
+			},
+			"percentage": false,
+			"pluginVersion": "7.5.7",
+			"pointradius": 2,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"exemplar": true,
+					"expr": "sum by(class, method) (student_api_operation_duration_seconds_sum / student_api_operation_duration_seconds_count * 1000) > 0",
+					"interval": "",
+					"legendFormat": "{{class}}#{{method}}",
+					"refId": "A"
+				},
+				{
+					"exemplar": true,
+					"expr": "http_request_duration_seconds_sum{code=\"200\"} / http_request_duration_seconds_count{code=\"200\"} * 1000",
+					"hide": false,
+					"interval": "",
+					"legendFormat": "Request Duration",
+					"refId": "B"
+				}
+			],
+			"thresholds": [],
+			"timeFrom": null,
+			"timeRegions": [],
+			"timeShift": null,
+			"title": "Operation Breakdown",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": []
+			},
+			"yaxes": [
+				{
+					"format": "ms",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": "0",
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		}
+	],
+	"refresh": "5s",
+	"schemaVersion": 27,
+	"style": "dark",
+	"tags": [],
+	"templating": {
+		"list": []
+	},
+	"time": {
+		"from": "now-15m",
+		"to": "now"
+	},
+	"timepicker": {},
+	"timezone": "",
+	"title": "Students API",
+	"uid": "q9epTuqMk",
+	"version": 1
+}
