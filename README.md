@@ -22,6 +22,12 @@ Read the [Overview](OVERVIEW.md) for additional context.
   docker-compose pull
   ```
 
+## tl;dr
+
+Don't have much time? Feel free to play around with the
+[finished version](https://github.com/dougludlow/metrics-workshop/tree/final) of
+this tutorial.
+
 ## Workshop
 
 Follow the steps below to become more familiar with Prometheus. We'll be
@@ -64,7 +70,7 @@ returns a list of students for a given classroom.
    and there are intermittent errors. That is part of the demo, we'll be fixing
    it later.
 
-### Installing `prometheus-net` ([diff](diff))
+### Installing `prometheus-net` ([diff](https://github.com/dougludlow/metrics-workshop/commit/c07702aeb56bb9d962e8b0db53790b8ed98e1a12))
 
 The `prometheus-net.AspNetCore` NuGet package is used to expose metrics to
 Prometheus via a `/metrics` endpoint. Let's go ahead and install it and
@@ -135,7 +141,7 @@ configure it to work with our API.
 
 1.  Generate a few more requests and ensure that 500 errors are now showing up.
 
-### Adding a Custom Metric ([diff](diff))
+### Adding a Custom Metric ([diff](https://github.com/dougludlow/metrics-workshop/commit/2661ae217d6ea4e1abcf55f67b77b528e1ce5415))
 
 There are four main
 [metric types](https://prometheus.io/docs/concepts/metric_types/) available in
@@ -249,7 +255,7 @@ access to.
    student_api_operation_duration_seconds_bucket{class="TrackedStudentsStore",method="GetStudents",le="+Inf"} 1
    ```
 
-### Configuring Prometheus to Pull Metrics ([diff](diff))
+### Configuring Prometheus to Pull Metrics ([diff](https://github.com/dougludlow/metrics-workshop/commit/8d371f968b9a55e11ec0d4f112b0dc9421b2772a))
 
 Our API is now instrumented to return metrics, but Prometheus isn't aware of it,
 yet. We need to configure Prometheus to start scraping metrics from the API.
@@ -304,7 +310,7 @@ getting any requests. Let's use `k6` to simulate some load.
    adjustments you'd like (for instance, you can try making it run for 9
    minutes).
 
-### Creating a Dashboard in Grafana ([diff](diff))
+### Creating a Dashboard in Grafana ([diff](https://github.com/dougludlow/metrics-workshop/commit/7c59b2fac0adb53fe2e05aa66351882cc0219cad))
 
 Now we're finally ready to create a Grafana dashboard. We'll be adding some
 graphs which will show the amount of cpu and memory being used by the API and
@@ -614,7 +620,7 @@ We've done it, we've created a dashboard. Let's go ahead and save it.
    <image src="docs/images/save.png" alt="Save" height="20" style="height: 1.5rem;vertical-align: middle;" />
    .
 
-### Adding Alerts ([diff](diff))
+### Adding Alerts ([diff](https://github.com/dougludlow/metrics-workshop/commit/3ea28ef2f83315f51757f9221ff569754cc6c78a))
 
 We're now ready to add an alert. We could alert on all sorts of things. Memory
 usage being too high, CPU percentage being over a threshold for too long, etc.
