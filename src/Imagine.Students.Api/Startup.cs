@@ -29,6 +29,7 @@ namespace Imagine.Students.Api
 
 			services.AddTransient<IStudentsStore, StudentsStore>();
 			services.Decorate<IStudentsStore, BrokenStudentsStore>();
+			services.Decorate<IStudentsStore, TrackedStudentsStore>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
