@@ -413,6 +413,35 @@
 			}
 		},
 		{
+			"alert": {
+				"alertRuleTags": {},
+				"conditions": [
+					{
+						"evaluator": {
+							"params": [0.8],
+							"type": "lt"
+						},
+						"operator": {
+							"type": "and"
+						},
+						"query": {
+							"params": ["A", "1m", "now"]
+						},
+						"reducer": {
+							"params": [],
+							"type": "avg"
+						},
+						"type": "query"
+					}
+				],
+				"executionErrorState": "alerting",
+				"for": "1m",
+				"frequency": "1m",
+				"handler": 1,
+				"name": "Request Duration Apdex alert",
+				"noDataState": "no_data",
+				"notifications": []
+			},
 			"aliasColors": {},
 			"bars": false,
 			"dashLength": 10,
@@ -446,7 +475,7 @@
 			"linewidth": 1,
 			"nullPointMode": "null",
 			"options": {
-				"alertThreshold": true
+				"alertThreshold": false
 			},
 			"percentage": false,
 			"pluginVersion": "7.5.7",

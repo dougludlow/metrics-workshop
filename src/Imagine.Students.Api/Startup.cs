@@ -28,7 +28,7 @@ namespace Imagine.Students.Api
 			});
 
 			services.AddTransient<IStudentsStore, StudentsStore>();
-			services.Decorate<IStudentsStore, BrokenStudentsStore>();
+			// services.Decorate<IStudentsStore, BrokenStudentsStore>();
 			services.Decorate<IStudentsStore, TrackedStudentsStore>();
 		}
 
