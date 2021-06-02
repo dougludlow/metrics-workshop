@@ -3,16 +3,14 @@ import http from 'k6/http';
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:5000';
 
 export let options = {
-	discardResponseBodies: true,
 	scenarios: {
-		stress: {
-			executor: 'ramping-vus',
-			startVUs: 0,
-			gracefulRampDown: '30s',
-			stages: [
-				{ duration: '2m', target: 500 },
-				{ duration: '30s', target: 0 },
-			],
+		constant_request_rate: {
+			executor: 'constant-arrival-rate',
+			rate: 1,
+			timeUnit: '1s',
+			duration: '1h',
+			preAllocatedVUs: 20,
+			maxVUs: 100,
 		},
 	},
 };
