@@ -56,7 +56,7 @@ brute force an account.
 
 The odd thing was the username being used in this attack didn't actually exist
 in Imagine Math. So we're not exactly sure what they were trying to accomplish.
-The attach eventually stopped and we added action items to prevent such attacks
+The attack eventually stopped and we added action items to prevent such attacks
 in the future. We also updated our retry logic to be a bit more robust such as
 not retrying invalid username/password attempts.
 
