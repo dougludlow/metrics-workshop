@@ -12,7 +12,6 @@ services:
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
     depends_on:
-      - alertmanager
       - cadvisor
     image: prom/prometheus:v2.27.1
     ports:
@@ -21,17 +20,6 @@ services:
     volumes:
       - ./config/prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
-
-  alertmanager:
-    command:
-      - '--config.file=/etc/alertmanager/config.yml'
-      - '--storage.path=/alertmanager'
-    image: prom/alertmanager:v0.22.1
-    ports:
-      - '9093:9093'
-    restart: always
-    volumes:
-      - ./config/alertmanager:/etc/alertmanager
 
   grafana:
     depends_on:

@@ -56,8 +56,10 @@ returns a list of students for a given classroom.
    docker-compose up -d api grafana
    ```
 
-1. Check the status of the containers and ensure they are all running, you
-   should see `prometheus`, `grafana`, `alertmanager`, `cadvisor` and `api`:
+1. Check the status of the containers and ensure they are all running. You
+   should see [`prometheus`](http://localhost:9090),
+   [`grafana`](http://localhost:3000), [`cadvisor`](http://localhost:8080) and
+   [`api`](http://localhost:5000):
 
    ```bash
    docker-compose ps
@@ -83,11 +85,14 @@ returns a list of students for a given classroom.
    and there are intermittent errors. That is part of the demo, we'll be fixing
    it later.
 
-### Installing `prometheus-net` ([diff](https://github.com/dougludlow/metrics-workshop/commit/c07702aeb56bb9d962e8b0db53790b8ed98e1a12))
+### Installing `prometheus-net` ([see changes](https://github.com/dougludlow/metrics-workshop/commit/c07702aeb56bb9d962e8b0db53790b8ed98e1a12))
 
 The `prometheus-net.AspNetCore` NuGet package is used to expose metrics to
 Prometheus via a `/metrics` endpoint. Let's go ahead and install it and
 configure it to work with our API.
+
+**NOTE:** An alternative library that is commonly used to expose metrics for
+.NET is [AppMetrics](https://www.app-metrics.io/).
 
 1.  First, let's attach to the `api` service's logs so we can observe build
     changes.
@@ -154,13 +159,12 @@ configure it to work with our API.
 
 1.  Generate a few more requests and ensure that 500 errors are now showing up.
 
-### Adding a Custom Metric ([diff](https://github.com/dougludlow/metrics-workshop/commit/2661ae217d6ea4e1abcf55f67b77b528e1ce5415))
+### Adding a Custom Metric ([see changes](https://github.com/dougludlow/metrics-workshop/commit/2661ae217d6ea4e1abcf55f67b77b528e1ce5415))
 
 There are four main
 [metric types](https://prometheus.io/docs/concepts/metric_types/) available in
-Prometheus. These can can be used to track custom metrics in your application,
-in addition to the default ones provided by `prometheus-net`. The metric types
-are:
+Prometheus. These can be used to track custom metrics in your application, in
+addition to the default ones provided by `prometheus-net`. The metric types are:
 
 - Counter - for tracking values that increase.
 - Gauge - for tracking values that increase or decrease.
@@ -168,9 +172,9 @@ are:
 - Summary - is like a Histogram, but also provides a total count and sum of
   values in addition to calculating quantiles.
 
-For example, you may want to track long it takes to make queries to a database
-or you may want to track how long HTTP requests to an external service are
-taking. A Histogram or Summary would be good for those examples. Perhaps you
+For example, you may want to track how long it takes to make queries to a
+database or you may want to track how long HTTP requests to an external service
+are taking. A Histogram or Summary would be good for those examples. Perhaps you
 want to track how many users are logging in to the system or maybe you'd like to
 track the number of active users. Counters or Gauges would be good to use in
 those cases.
@@ -240,6 +244,9 @@ access to.
    services.Decorate<IStudentsStore, TrackedStudentsStore>();
    ```
 
+   **NOTE:** The [`Scrutor`](https://github.com/khellang/Scrutor) library is
+   providing the `Decorate` method here.
+
 1. Make a request to the
    [`api/classrooms/{id}/students`](http://localhost:5000/api/classrooms/2ae08889-59d0-4d2a-920a-083ca2dba1a7/students)
    endpoint and then take at look at the metrics endpoint
@@ -268,9 +275,9 @@ access to.
    student_api_operation_duration_seconds_bucket{class="TrackedStudentsStore",method="GetStudents",le="+Inf"} 1
    ```
 
-### Configuring Prometheus to Pull Metrics ([diff](https://github.com/dougludlow/metrics-workshop/commit/8d371f968b9a55e11ec0d4f112b0dc9421b2772a))
+### Configuring Prometheus to Pull Metrics ([see changes](https://github.com/dougludlow/metrics-workshop/commit/8d371f968b9a55e11ec0d4f112b0dc9421b2772a))
 
-Our API is now instrumented to return metrics, but Prometheus isn't aware of it,
+Our API is now instrumented to return metrics, but Prometheus isn't aware of it
 yet. We need to configure Prometheus to start scraping metrics from the API.
 
 1. Open up the Prometheus config file
@@ -291,7 +298,7 @@ yet. We need to configure Prometheus to start scraping metrics from the API.
    ```
 
 1. Now navigate to http://localhost:9090. This is the Prometheus UI where you
-   can make ad-hock queries using
+   can make ad-hoc queries using
    [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/).
 
 1. Enter `http_requests_received_total` into the Expression field and hit
@@ -319,11 +326,11 @@ getting any requests. Let's use `k6` to simulate some load.
 
    This will simulate 100-200 users making requests to the
    `api/classrooms/{id}/students` endpoint over 6 minutes. Feel free to take a
-   look the [script](tests/load/classroom-students-stress.js) and make any
+   look at the [script](tests/load/classroom-students-stress.js) and make any
    adjustments you'd like (for instance, you can try making it run for 9
    minutes).
 
-### Creating a Dashboard in Grafana ([diff](https://github.com/dougludlow/metrics-workshop/commit/7c59b2fac0adb53fe2e05aa66351882cc0219cad))
+### Creating a Dashboard in Grafana ([see changes](https://github.com/dougludlow/metrics-workshop/commit/7c59b2fac0adb53fe2e05aa66351882cc0219cad))
 
 Now we're finally ready to create a Grafana dashboard. We'll be adding some
 graphs which will show the amount of cpu and memory being used by the API and
@@ -633,16 +640,16 @@ We've done it, we've created a dashboard. Let's go ahead and save it.
    <image src="docs/images/save.png" alt="Save" height="20" style="height: 1.5rem;vertical-align: middle;" />
    .
 
-### Adding Alerts ([diff](https://github.com/dougludlow/metrics-workshop/commit/3ea28ef2f83315f51757f9221ff569754cc6c78a))
+### Adding Alerts ([see changes](https://github.com/dougludlow/metrics-workshop/commit/3ea28ef2f83315f51757f9221ff569754cc6c78a))
 
 We're now ready to add an alert. We could alert on all sorts of things. Memory
 usage being too high, CPU percentage being over a threshold for too long, etc.
 Let's create an alert around our Request Duration Apdex.
 
 1. Select the little chevron icon on the top of the "Request Duration Apdex"
-   panel the choose "Edit".
+   panel, then choose "Edit".
 
-1. Click on the the "Alert tab" and click on the "Create Alert" button.
+1. Click on the "Alert" tab and click on the "Create Alert" button.
 
 1. Configure the following:
 
@@ -654,7 +661,7 @@ Let's create an alert around our Request Duration Apdex.
    - Select "Is Above" from the dropdown and change it to "Is Below"
    - Enter `.8`
 
-   **NOTE:** In a production environment we might configure services like Slack
+   **NOTE:** In a production environment, we might configure services like Slack
    or Ops Genie to be notified when an alert triggers. We won't be setting up
    notifications for this demo.
 
@@ -684,7 +691,7 @@ Let's create an alert around our Request Duration Apdex.
 
 ### Conclusion
 
-And that's it. Prometheus is a great tool tracking metrics around your
+And that's it. Prometheus is a great tool for tracking metrics around your
 distributed services. When paired with Grafana, you can very effectively monitor
 your service's health and debug performance related issues. Alerts can help us
 be proactive at providing better experiences for our users.
