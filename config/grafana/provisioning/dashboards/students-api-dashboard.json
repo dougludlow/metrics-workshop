@@ -495,7 +495,16 @@
 					"refId": "A"
 				}
 			],
-			"thresholds": [],
+			"thresholds": [
+				{
+					"colorMode": "critical",
+					"fill": false,
+					"line": false,
+					"op": "lt",
+					"value": 0.8,
+					"visible": true
+				}
+			],
 			"timeFrom": null,
 			"timeRegions": [],
 			"timeShift": null,
@@ -537,7 +546,10 @@
 			}
 		},
 		{
-			"aliasColors": {},
+			"aliasColors": {
+				"200": "green",
+				"500": "red"
+			},
 			"bars": false,
 			"dashLength": 10,
 			"dashes": false,
@@ -578,21 +590,30 @@
 			"renderer": "flot",
 			"seriesOverrides": [],
 			"spaceLength": 10,
-			"stack": true,
+			"stack": false,
 			"steppedLine": false,
 			"targets": [
 				{
-					"expr": "sum by (code) (rate(http_requests_received_total{job=\"api\",code=~\"[45]..\"}[1m]))",
+					"exemplar": true,
+					"expr": "sum by (code) (rate(http_requests_received_total{job=\"api\"}[1m]))",
 					"interval": "",
 					"legendFormat": "{{code}}",
 					"refId": "A"
+				},
+				{
+					"exemplar": true,
+					"expr": "",
+					"hide": false,
+					"interval": "",
+					"legendFormat": "{{code}}",
+					"refId": "B"
 				}
 			],
 			"thresholds": [],
 			"timeFrom": null,
 			"timeRegions": [],
 			"timeShift": null,
-			"title": "Errors",
+			"title": "Requests (per second)",
 			"tooltip": {
 				"shared": true,
 				"sort": 0,
@@ -608,6 +629,7 @@
 			},
 			"yaxes": [
 				{
+					"$$hashKey": "object:82",
 					"format": "short",
 					"label": null,
 					"logBase": 1,
@@ -616,6 +638,7 @@
 					"show": true
 				},
 				{
+					"$$hashKey": "object:83",
 					"format": "short",
 					"label": null,
 					"logBase": 1,
@@ -740,7 +763,7 @@
 		"list": []
 	},
 	"time": {
-		"from": "now-15m",
+		"from": "now-1h",
 		"to": "now"
 	},
 	"timepicker": {},
