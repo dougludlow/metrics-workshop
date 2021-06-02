@@ -308,21 +308,21 @@ getting any requests. Let's use `k6` to simulate some load.
 1. Run the following command to run our `k6` script:
 
    ```bash
-   docker-compose run --rm k6
+   docker-compose run --rm k6 run -e BASE_URL=http://api:5000 tests/load/classroom-students-constant.js
    ```
 
-   This will simulate 100-200 users making requests to the
-   `api/classrooms/{id}/students` endpoint over 6 minutes. Feel free to take a
-   look at the [script](tests/load/classroom-students-stress.js) and make any
-   adjustments you'd like (for instance, you can try making it run for 9
-   minutes).
+   This will simulate 1 user making 1 request to the
+   `api/classrooms/{id}/students` endpoint each second for the next 60 minutes.
+   Feel free to take a look at the
+   [script](tests/load/classroom-students-constant.js) and make any adjustments
+   you'd like (for instance, you can try making it simulate 5 users).
 
 ### Creating a Dashboard in Grafana ([see changes](https://github.com/dougludlow/metrics-workshop/commit/7c59b2fac0adb53fe2e05aa66351882cc0219cad))
 
 Now we're finally ready to create a Grafana dashboard. We'll be adding some
-graphs which will show the amount of cpu and memory being used by the API and
-some graphs around request duration and error rates. We'll even add a request
-duration [Apdex](https://en.wikipedia.org/wiki/Apdex) as a bonus.
+graphs around request duration and error rates. We'll also add a graph around
+our custom metric. We'll even add a request duration
+[Apdex](https://en.wikipedia.org/wiki/Apdex) as a bonus.
 
 1. First, let's navigate to http://localhost:3000 and log in. Use the following
    credentials:
@@ -335,73 +335,6 @@ duration [Apdex](https://en.wikipedia.org/wiki/Apdex) as a bonus.
    in the left navigation and click
    "[Create](http://localhost:3000/dashboard/new)". Now, we can start adding
    panels.
-
-#### Adding the CPU Usage Panel
-
-**NOTE**: `cadvisor` is used to track CPU and memory metrics on Docker
-containers. It may not work on Windows. If this is the case, the CPU and memory
-panels we're creating now will be empty. Feel free to skip over these steps if
-necessary.
-
-1. Click "Add an empty panel".
-
-1. On the "Panel" tab to the right, enter `CPU Usage` into the "Panel title"
-   field.
-
-1. Expand the "Display" section and, under "Stacking and null value", set "Null
-   value" to `connected`.
-
-1. Expand the "Axes" section below. From the "Unit" dropdown under "Left Y",
-   choose `Misc / Percent (0-100)`.
-
-1. On the "Query" tab at the bottom, enter the following in the "Metrics" field:
-
-   ```go
-   sum by (id) (rate(container_cpu_usage_seconds_total{container_label_com_docker_compose_service="api"}[2m]))
-   /
-   sum by (id) (
-     container_spec_cpu_shares{container_label_com_docker_compose_service="api"}
-     /
-     container_spec_cpu_period{container_label_com_docker_compose_service="api"}
-   )
-   ```
-
-1. In the "Legend" field just below, enter `{{id}}`. This will display the
-   unique docker container IDs.
-
-1. Click
-   <image src="docs/images/apply.png" alt="Apply" height="20" style="height: 1.5rem;vertical-align: middle;" />
-   in the top right.
-
-#### Adding the Memory Usage Panel
-
-1. Click the
-   <image src="docs/images/add-panel.png" alt="Add panel" height="20" style="height: 1.5rem;vertical-align: middle;" />
-   button in the top right.
-
-1. Click "Add an empty panel".
-
-1. In the "Panel title" field, on the "Panel" tab to the right, enter
-   `Memory Usage`.
-
-1. Expand the "Display" section and, under "Stacking and null value", set "Null
-   value" to `connected`.
-
-1. Expand the "Axes" section and choose `Data / bytes(SI)` from the dropdown for
-   in the "Unit".
-
-1. On the "Query" tab, at the bottom, enter the following in the "Metrics"
-   field:
-
-   ```go
-   sum by (id) (container_memory_working_set_bytes{container_label_com_docker_compose_service="api"})
-   ```
-
-1. In the "Legend" field, enter `{{id}}`.
-
-1. Once again, click
-   <image src="docs/images/apply.png" alt="Apply" height="20" style="height: 1.5rem;vertical-align: middle;" />
-   in the top right.
 
 #### Adding the Request Duration Panel
 
@@ -500,7 +433,7 @@ necessary.
    <image src="docs/images/apply.png" alt="Apply" height="20" style="height: 1.5rem;vertical-align: middle;" />
    .
 
-#### Adding the Errors Panel
+#### Adding the Requests Panel
 
 1. Click
    <image src="docs/images/add-panel.png" alt="Add panel" height="20" style="height: 1.5rem;vertical-align: middle;" />
@@ -508,11 +441,10 @@ necessary.
 
 1. Click "Add an empty panel".
 
-1. Enter `Errors` in the "Panel title".
+1. Enter `Requests (per second)` in the "Panel title".
 
 1. Expand the "Display" section and, under "Stacking and null value":
 
-   - Toggle "Stack" on.
    - Set "Null value" to `null as zero`.
 
 1. Inside the "Axes" section, enter `0` into the "Y-Min" field, under "Left Y".
@@ -520,7 +452,7 @@ necessary.
 1. On the "Query" tab, enter the following into the "Metrics" field:
 
    ```go
-   sum by (code) (rate(http_requests_received_total{job="api",code=~"[45].."}[1m]))
+   sum by (code) (rate(http_requests_received_total{job="api"}[1m]))
    ```
 
 1. In the "Legend" field, enter `{{code}}`. This will show the unique HTTP error
@@ -660,11 +592,11 @@ Let's create an alert around our Request Duration Apdex.
    <image src="docs/images/save-dashboard.png" alt="Save dashboard" height="20" style="height: 1.5rem;vertical-align: middle;" />
    button in top right.
 
-1. If you run `k6` again. You should see the Apdex alert tigger after the Apdex
-   dives under .8 for a minute.
+1. Let's run a simple load test with `k6`. You should see the Apdex alert tigger
+   after the Apdex dives under .8 for a minute.
 
    ```bash
-   docker-compose --rm run k6
+   docker-compose run --rm k6 run -e BASE_URL=http://api:5000 tests/load/classroom-students-stress.js
    ```
 
 1. Let's fix the API by commenting out the `BrokenStudentsStore` decorator in
@@ -676,7 +608,79 @@ Let's create an alert around our Request Duration Apdex.
 
 1. Run `k6` again and notice that the alert clears after a minute.
 
-### Conclusion
+### Extra Credit
+
+If you've made it this far and have some extra time, feel free to add the
+following panels to track CPU and memory usage.
+
+**NOTE**: `cadvisor` is used to track CPU and memory metrics on Docker
+containers. It may not work on Windows. If this is the case, the CPU and memory
+panels we're creating now will be empty. Feel free to skip over these steps if
+necessary.
+
+#### Adding the CPU Usage Panel
+
+1. Click "Add an empty panel".
+
+1. On the "Panel" tab to the right, enter `CPU Usage` into the "Panel title"
+   field.
+
+1. Expand the "Display" section and, under "Stacking and null value", set "Null
+   value" to `connected`.
+
+1. Expand the "Axes" section below. From the "Unit" dropdown under "Left Y",
+   choose `Misc / Percent (0-100)`.
+
+1. On the "Query" tab at the bottom, enter the following in the "Metrics" field:
+
+   ```go
+   sum by (id) (rate(container_cpu_usage_seconds_total{container_label_com_docker_compose_service="api"}[2m]))
+   /
+   sum by (id) (
+     container_spec_cpu_shares{container_label_com_docker_compose_service="api"}
+     /
+     container_spec_cpu_period{container_label_com_docker_compose_service="api"}
+   )
+   ```
+
+1. In the "Legend" field just below, enter `{{id}}`. This will display the
+   unique docker container IDs.
+
+1. Click
+   <image src="docs/images/apply.png" alt="Apply" height="20" style="height: 1.5rem;vertical-align: middle;" />
+   in the top right.
+
+#### Adding the Memory Usage Panel
+
+1. Click the
+   <image src="docs/images/add-panel.png" alt="Add panel" height="20" style="height: 1.5rem;vertical-align: middle;" />
+   button in the top right.
+
+1. Click "Add an empty panel".
+
+1. In the "Panel title" field, on the "Panel" tab to the right, enter
+   `Memory Usage`.
+
+1. Expand the "Display" section and, under "Stacking and null value", set "Null
+   value" to `connected`.
+
+1. Expand the "Axes" section and choose `Data / bytes(SI)` from the dropdown for
+   in the "Unit".
+
+1. On the "Query" tab, at the bottom, enter the following in the "Metrics"
+   field:
+
+   ```go
+   sum by (id) (container_memory_working_set_bytes{container_label_com_docker_compose_service="api"})
+   ```
+
+1. In the "Legend" field, enter `{{id}}`.
+
+1. Once again, click
+   <image src="docs/images/apply.png" alt="Apply" height="20" style="height: 1.5rem;vertical-align: middle;" />
+   in the top right.
+
+## Conclusion
 
 And that's it. Prometheus is a great tool for tracking metrics around your
 distributed services. When paired with Grafana, you can very effectively monitor
@@ -685,3 +689,19 @@ be proactive at providing better experiences for our users.
 
 I hope you found this tutorial helpful. Let me know if I missed anything. Feel
 free to open a pull request.
+
+## Helpful Commands
+
+- To clean the `prometheus` and `grafana` services' state, remove their data
+  volumes:
+
+  ```bash
+  docker volume rm metrics-workshop_prometheus_data metrics-workshop_grafana_data
+  ```
+
+  **NOTE:** This will need to be run when the services are down. Run the
+  following to take it all down:
+
+  ```bash
+  docker-compose down
+  ```
