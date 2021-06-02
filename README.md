@@ -43,8 +43,10 @@ returns a list of students for a given classroom.
    docker-compose up -d api grafana
    ```
 
-1. Check the status of the containers and ensure they are all running, you
-   should see `prometheus`, `grafana`, `alertmanager`, `cadvisor` and `api`:
+1. Check the status of the containers and ensure they are all running. You
+   should see [`prometheus`](http://localhost:9090),
+   [`grafana`](http://localhost:3000), [`cadvisor`](http://localhost:8080) and
+   [`api`](http://localhost:5000):
 
    ```bash
    docker-compose ps
