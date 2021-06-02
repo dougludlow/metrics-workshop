@@ -47,7 +47,7 @@ retry for a total of 2 seconds. So that solved the initial mystery as to why we
 had a sudden uptick in our request time by 2 seconds. But we needed to
 investigate why the Auth Service was erroring out now.
 
-We inspected the Auth Services Grafana dashboard and verified that there was an
+We inspected the Auth Service's Grafana dashboard and verified that there was an
 uptick in error responses. However, the response codes were 400's, which
 indicates an issue with the input (username and password) not the service
 itself. After inspecting the Auth Services logs, sure enough, we found the these
